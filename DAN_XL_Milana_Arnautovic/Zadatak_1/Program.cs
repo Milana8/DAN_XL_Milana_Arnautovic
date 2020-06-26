@@ -16,11 +16,12 @@ namespace Zadatak_1
         public static Random random = new Random();
         static object l1 = new object();
         static object l2 = new object();
-        static CountdownEvent countdown = new CountdownEvent(10);
         static AutoResetEvent event1 = new AutoResetEvent(true);
         static AutoResetEvent event2 = new AutoResetEvent(true);
 
-
+        /// <summary>
+        /// A method that writes data to a file
+        /// </summary>
         public static void ColorPrint()
         {
 
@@ -49,44 +50,38 @@ namespace Zadatak_1
         }
 
 
-
+        /// <summary>
+        /// A4 printer method
+        /// </summary>
         public static void Printer1()
         {
-
-            string orientation1 = "portrait";
-            string orientation2 = "landscape";
-            string[] orientation = { orientation1, orientation2 };
-
-
 
             lock (l1)
             {
                 Thread.Sleep(1000);
                 Console.WriteLine(Thread.CurrentThread.Name + " user can take an A4 format document.\n");
-                
+
             }
 
-            
         }
 
-
-
+        /// <summary>
+        /// A3 printer method
+        /// </summary>
         public static void Printer2()
         {
-
 
             lock (l2)
             {
 
-                
                 Thread.Sleep(1000);
                 Console.WriteLine(Thread.CurrentThread.Name + " user can take an A3 format document.\n");
-                
-
             }
 
         }
-
+        /// <summary>
+        /// Printer method
+        /// </summary>
         public static void Printer()
         {
             while (computers.Count < 10)
@@ -104,7 +99,8 @@ namespace Zadatak_1
                 Console.WriteLine(Thread.CurrentThread.Name + " sent the request to print the document format: " + format[c] + ", color: " + colors[a] + ", orientation: " + orientation[d]);
                 Thread.Sleep(100);
 
-                if (format[c] == format1)
+                //If the format is A3 we call the Printer1 method
+                if (format[c] == format1) 
                 {
                     event1.WaitOne();
                     if (computers.Count == 10)
@@ -115,7 +111,7 @@ namespace Zadatak_1
                     Printer1();
                     event1.Set();
                 }
-                
+                //If the format is A4, we call the Printer2 method
                 else
                 {
                     event2.WaitOne();
@@ -145,12 +141,13 @@ namespace Zadatak_1
 
             for (int i = 0; i < 10; i++)
             {
-                Thread thread = new Thread(Printer)
+                Thread thread = new Thread(Printer) //Creating threads
                 {
-                    //naming each thread
-                    Name = String.Format("Computer_{0}", i + 1)
+
+                    Name = String.Format("Computer_{0}", i + 1) //Naming threads
                 };
-                thread.Start();
+                thread.Start(); //Starting threads
+
             }
 
             Console.ReadLine();
