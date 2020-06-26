@@ -12,10 +12,12 @@ namespace Zadatak_1
     {
         public static readonly string FileColors = @"../../Colors.txt";
         public static List<string> colors = new List<string>();
+        public static List<Thread> threads = new List<Thread>();
         public static Random random = new Random();
         public static string[] format;
         public static string[] orientation;
-        static object l = new object();
+        static object l1 = new object();
+        static object l2 = new object();
         static EventWaitHandle waitHande = new AutoResetEvent(false);
 
         public static void ColorPrint()
@@ -46,64 +48,110 @@ namespace Zadatak_1
         }
 
 
-        public static void Printer(Thread t)
+
+        public static void Printer1()
+        {
+
+            string orientation1 = "portrait";
+            string orientation2 = "landscape";
+            string[] orientation = { orientation1, orientation2 };
+
+            
+            int a = random.Next(0, colors.Count);
+            int c = random.Next(0, 2);
+            int d = random.Next(0, 2);
+
+            Thread.Sleep(100);
+
+
+            Console.WriteLine(Thread.CurrentThread.Name + " sent the request to print the document format: A4" + ", color: " + colors[a] + ", orientation: " + orientation[d]);
+
+            lock (l2)
+            {
+               
+                Thread.Sleep(1000);
+                Console.WriteLine(Thread.CurrentThread.Name + " user can take an A4 format document.\n");
+
+            }
+            
+
+
+        }
+
+
+
+        public static void Printer2()
         {
             string orientation1 = "portrait";
             string orientation2 = "landscape";
             string[] orientation = { orientation1, orientation2 };
 
+            
+            int a = random.Next(0, colors.Count);
+            int c = random.Next(0, 2);
+            int d = random.Next(0, 2);
+
+            Thread.Sleep(100);
+            Console.WriteLine(Thread.CurrentThread.Name + " sent the request to print the document format: A3" + ", color: " + colors[a] + ", orientation: " + orientation[d]);
+
+            lock (l2)
+            {
+               
+                Thread.Sleep(1000);
+                Console.WriteLine(Thread.CurrentThread.Name + " user can take an A3 format document.\n");
+                
+            }
+            
+        }
+
+        public static void Printer()
+        {
             string format1 = "A3";
             string format2 = "A4";
             string[] format = { format1, format2 };
+            int c = random.Next(0, 2);
 
-            lock (l)
+            if (format[c] == "A3")
             {
-
-                waitHande.Set();
-                int a = random.Next(0, colors.Count);
-                int c = random.Next(0, 2);
-                int d = random.Next(0, 2);
-
-                Thread.Sleep(100);
-                waitHande.WaitOne();
-
-                Console.WriteLine(t.Name + " sent the request to print the document format: " + format[c] + ", color: " + colors[a] + ", orientation: " + orientation[d]);
-                Thread.Sleep(1000);
-                Console.WriteLine(t.Name + " user can take an " + format[c] + " format document.\n");
+                
+                Printer1();
             }
-
-
-        }
-
-
+           
+            else if (format[c] == "A4")
+            {
+               
+                Printer2();
+            }
+            
+            }        
+                       
 
 
         static void Main(string[] args)
         {
-            ColorPrint();
+            Thread color = new Thread(new ThreadStart(ColorPrint));
+            color.Start();
+            color.Join();
 
-            Thread[] thr = new Thread[10];
-
+            
             for (int i = 0; i < 10; i++)
             {
-
-                Thread t = new Thread(() => Printer(Thread.CurrentThread)) //creating threads
+                Thread t = new Thread(new ThreadStart(Printer))
                 {
-
-                    Name = string.Format("Computer_{0} ", i + 1) //naming threads
-
+                    Name = string.Format("Computer_{0} ", i + 1)
                 };
-
-                thr[i] = t;
+                threads.Add(t);
 
             }
-
-            foreach (var i in thr) i.Start();
+            
+            for (int i = 0; i < threads.Count; i++)
+            {
+                threads[i].Start();
+            }
             Console.ReadLine();
-
         }
-
     }
 }
+
 
 

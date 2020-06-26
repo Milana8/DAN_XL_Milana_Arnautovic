@@ -5,3 +5,10 @@ C:\Users\panonit\Desktop\DAN_XL_Milana_Arnautovic\DAN_XL_Milana_Arnautovic\Zadat
 C:\Users\panonit\Desktop\DAN_XL_Milana_Arnautovic\DAN_XL_Milana_Arnautovic\Zadatak_1\obj\Debug\Zadatak_1.csproj.CoreCompileInputs.cache
 C:\Users\panonit\Desktop\DAN_XL_Milana_Arnautovic\DAN_XL_Milana_Arnautovic\Zadatak_1\obj\Debug\Zadatak_1.exe
 C:\Users\panonit\Desktop\DAN_XL_Milana_Arnautovic\DAN_XL_Milana_Arnautovic\Zadatak_1\obj\Debug\Zadatak_1.pdb
+C:\Users\Korisnik\Desktop\DAN_XL_Milana_Arnautovic\DAN_XL_Milana_Arnautovic\Zadatak_1\bin\Debug\Zadatak_1.exe.config
+C:\Users\Korisnik\Desktop\DAN_XL_Milana_Arnautovic\DAN_XL_Milana_Arnautovic\Zadatak_1\bin\Debug\Zadatak_1.exe
+C:\Users\Korisnik\Desktop\DAN_XL_Milana_Arnautovic\DAN_XL_Milana_Arnautovic\Zadatak_1\bin\Debug\Zadatak_1.pdb
+C:\Users\Korisnik\Desktop\DAN_XL_Milana_Arnautovic\DAN_XL_Milana_Arnautovic\Zadatak_1\obj\Debug\Zadatak_1.csprojAssemblyReference.cache
+C:\Users\Korisnik\Desktop\DAN_XL_Milana_Arnautovic\DAN_XL_Milana_Arnautovic\Zadatak_1\obj\Debug\Zadatak_1.csproj.CoreCompileInputs.cache
+C:\Users\Korisnik\Desktop\DAN_XL_Milana_Arnautovic\DAN_XL_Milana_Arnautovic\Zadatak_1\obj\Debug\Zadatak_1.exe
+C:\Users\Korisnik\Desktop\DAN_XL_Milana_Arnautovic\DAN_XL_Milana_Arnautovic\Zadatak_1\obj\Debug\Zadatak_1.pdb
