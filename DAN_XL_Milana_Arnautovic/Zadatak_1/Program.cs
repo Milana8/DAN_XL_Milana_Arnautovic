@@ -12,13 +12,14 @@ namespace Zadatak_1
     {
         public static readonly string FileColors = @"../../Colors.txt";
         public static List<string> colors = new List<string>();
-        public static List<Thread> threads = new List<Thread>();
+        public static List<string> computers = new List<string>();
         public static Random random = new Random();
-        public static string[] format;
-        public static string[] orientation;
         static object l1 = new object();
         static object l2 = new object();
-        static EventWaitHandle waitHande = new AutoResetEvent(false);
+        static CountdownEvent countdown = new CountdownEvent(10);
+        static AutoResetEvent event1 = new AutoResetEvent(true);
+        static AutoResetEvent event2 = new AutoResetEvent(true);
+
 
         public static void ColorPrint()
         {
@@ -56,75 +57,83 @@ namespace Zadatak_1
             string orientation2 = "landscape";
             string[] orientation = { orientation1, orientation2 };
 
-            
-            int a = random.Next(0, colors.Count);
-            int c = random.Next(0, 2);
-            int d = random.Next(0, 2);
-
-            Thread.Sleep(100);
 
 
-            Console.WriteLine(Thread.CurrentThread.Name + " sent the request to print the document format: A4" + ", color: " + colors[a] + ", orientation: " + orientation[d]);
-
-            lock (l2)
+            lock (l1)
             {
-               
                 Thread.Sleep(1000);
                 Console.WriteLine(Thread.CurrentThread.Name + " user can take an A4 format document.\n");
-
+                
             }
+
             
-
-
         }
 
 
 
         public static void Printer2()
         {
-            string orientation1 = "portrait";
-            string orientation2 = "landscape";
-            string[] orientation = { orientation1, orientation2 };
 
-            
-            int a = random.Next(0, colors.Count);
-            int c = random.Next(0, 2);
-            int d = random.Next(0, 2);
-
-            Thread.Sleep(100);
-            Console.WriteLine(Thread.CurrentThread.Name + " sent the request to print the document format: A3" + ", color: " + colors[a] + ", orientation: " + orientation[d]);
 
             lock (l2)
             {
-               
+
+                
                 Thread.Sleep(1000);
                 Console.WriteLine(Thread.CurrentThread.Name + " user can take an A3 format document.\n");
                 
+
             }
-            
+
         }
 
         public static void Printer()
         {
-            string format1 = "A3";
-            string format2 = "A4";
-            string[] format = { format1, format2 };
-            int c = random.Next(0, 2);
+            while (computers.Count < 10)
+            {
+                string format1 = "A3";
+                string format2 = "A4";
+                string[] format = { format1, format2 };
+                int c = random.Next(0, 2);
+                string orientation1 = "portrait";
+                string orientation2 = "landscape";
+                string[] orientation = { orientation1, orientation2 };
+                int a = random.Next(0, colors.Count);
+                int d = random.Next(0, 2);
 
-            if (format[c] == "A3")
-            {
+                Console.WriteLine(Thread.CurrentThread.Name + " sent the request to print the document format: " + format[c] + ", color: " + colors[a] + ", orientation: " + orientation[d]);
+                Thread.Sleep(100);
+
+                if (format[c] == format1)
+                {
+                    event1.WaitOne();
+                    if (computers.Count == 10)
+                    {
+                        return;
+
+                    }
+                    Printer1();
+                    event1.Set();
+                }
                 
-                Printer1();
+                else
+                {
+                    event2.WaitOne();
+                    if (computers.Count == 10)
+                    {
+                        return;
+                    }
+                    Printer2();
+                    event2.Set();
+                }
+                
+                if (!computers.Contains(Thread.CurrentThread.Name))
+                {
+                    computers.Add(Thread.CurrentThread.Name);
+                }
             }
-           
-            else if (format[c] == "A4")
-            {
-               
-                Printer2();
-            }
-            
-            }        
-                       
+        }
+
 
 
         static void Main(string[] args)
@@ -133,23 +142,20 @@ namespace Zadatak_1
             color.Start();
             color.Join();
 
-            
+
             for (int i = 0; i < 10; i++)
             {
-                Thread t = new Thread(new ThreadStart(Printer))
+                Thread thread = new Thread(Printer)
                 {
-                    Name = string.Format("Computer_{0} ", i + 1)
+                    //naming each thread
+                    Name = String.Format("Computer_{0}", i + 1)
                 };
-                threads.Add(t);
+                thread.Start();
+            }
 
-            }
-            
-            for (int i = 0; i < threads.Count; i++)
-            {
-                threads[i].Start();
-            }
             Console.ReadLine();
         }
+
     }
 }
 
